@@ -155,7 +155,7 @@ export default function URLBuilder() {
                     <CardTitle className="text-2xl">URL Components</CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-col gap-4">
-                    <div className="flex gap-4">
+                    <div className="flex flex-col md:flex-row gap-4">
                         <ProtocolSelect value={urlData.protocol} onValueChange={onProtocolChange} />
                         <div className="flex flex-col gap-2 flex-grow">
                             <Label htmlFor="hostname">Hostname</Label>
@@ -194,7 +194,7 @@ export default function URLBuilder() {
                             <div className="text-sm font-bold">Advanced Options</div>
                             <Badge variant="outline">Optional</Badge>
                         </div>
-                        <CollapsibleContent className="p-4 flex gap-4">
+                        <CollapsibleContent className="p-4 flex flex-col md:flex-row gap-4">
                             <div className="flex flex-col gap-2">
                                 <Label htmlFor="port">Port</Label>
                                 <Input
