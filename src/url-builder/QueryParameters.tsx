@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { Input } from '@/components/ui/input';
 import clsx from 'clsx';
-import { PiPlus, PiWarningDuotone, PiXCircle } from 'react-icons/pi';
+import { PiEquals, PiPlus, PiWarningDuotone, PiXCircle } from 'react-icons/pi';
 import { trackingParameters } from '../tracking-params';
 import { QueryParameter } from './types';
 
@@ -58,7 +58,7 @@ export default function QueryParameters({
                     <div
                         key={parameter.id}
                         className={clsx(
-                            'grid md:grid-cols-[24px_1fr_1fr_auto] gap-4 items-center bg-slate-50 border border-slate-200 rounded p-4',
+                            'grid md:grid-cols-[24px_1fr_auto_1fr_auto] gap-4 items-center bg-slate-50 border border-slate-200 rounded p-4',
                             {
                                 'bg-yellow-50 border-yellow-200': trackingParameters.includes(
                                     parameter.name
@@ -92,6 +92,7 @@ export default function QueryParameters({
                             value={parameter.name}
                             onChange={(event) => onChange(event, parameter.id)}
                         />
+                        <PiEquals />
                         <Input
                             className="bg-white"
                             placeholder="Value"
