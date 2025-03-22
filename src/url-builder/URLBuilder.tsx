@@ -1,15 +1,10 @@
-import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useEffect, useState } from 'react';
 import { PiLink } from 'react-icons/pi';
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue
-} from '@/components/ui/select';
+import CopyToClipboardButton from './CopyToClipboardButton';
+import ProtocolSelect from './ProtocolSelect';
 
 export default function URLBuilder() {
     const [url, setUrl] = useState('');
@@ -21,16 +16,16 @@ export default function URLBuilder() {
         port: ''
     });
 
-    function updateUrl(newData) {
+    useEffect(() => {
         try {
-            const newUrl = new URL(`${newData.protocol}//${newData.hostname}`);
-            newUrl.pathname = newData.pathname;
+            const newUrl = new URL(`${urlData.protocol}//${urlData.hostname}`);
+            newUrl.pathname = urlData.pathname;
 
             setUrl(newUrl.href);
         } catch {
             setUrl('');
         }
-    }
+    }, [urlData]);
 
     function onProtocolChange(protocol: string) {
         setUrlData((urlData) => ({
@@ -40,13 +35,10 @@ export default function URLBuilder() {
     }
 
     function onInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-        const newData = {
+        setUrlData(urlData => ({
             ...urlData,
             [event.target.name]: event.target.value
-        };
-
-        setUrlData(newData);
-        updateUrl(newData);
+        }));
     }
 
     function onUrlChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -81,7 +73,8 @@ export default function URLBuilder() {
                     <CardTitle>
                         <div className="flex items-center gap-1">
                             <PiLink />
-                            URL
+                            <div className="flex-grow">URL</div>
+                            <CopyToClipboardButton url={url} />
                         </div>
                     </CardTitle>
                 </CardHeader>
@@ -100,18 +93,7 @@ export default function URLBuilder() {
                 </CardHeader>
                 <CardContent className="flex flex-col gap-4">
                     <div className="flex gap-4">
-                        <div className="flex flex-col gap-2">
-                            <Label htmlFor="protocol">Protocol</Label>
-                            <Select value={urlData.protocol} onValueChange={onProtocolChange}>
-                                <SelectTrigger id="protocol" className="w-[180px]">
-                                    <SelectValue placeholder="Protocol" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="http:">http</SelectItem>
-                                    <SelectItem value="https:">https</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
+                        <ProtocolSelect value={urlData.protocol} onValueChange={onProtocolChange} />
                         <div className="flex flex-col gap-2 flex-grow">
                             <Label htmlFor="hostname">Hostname</Label>
                             <Input
