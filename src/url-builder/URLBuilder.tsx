@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
-import { PiLink } from 'react-icons/pi';
+import { PiLinkSimple } from 'react-icons/pi';
 import CopyToClipboardButton from './CopyToClipboardButton';
 import ProtocolSelect from './ProtocolSelect';
 
@@ -22,6 +22,8 @@ export default function URLBuilder() {
             if (shouldUpdateUrl) {
                 const newUrl = new URL(`${urlData.protocol}//${urlData.hostname}`);
                 newUrl.pathname = urlData.pathname;
+                newUrl.hash = urlData.hash;
+                newUrl.port = urlData.port;
 
                 setUrl(newUrl.href);
             }
@@ -78,7 +80,8 @@ export default function URLBuilder() {
                 <CardHeader>
                     <CardTitle>
                         <div className="flex items-center gap-1">
-                            <PiLink />
+                            <PiLinkSimple />
+                            
                             <div className="flex-grow">URL</div>
                             <CopyToClipboardButton url={url} />
                         </div>
