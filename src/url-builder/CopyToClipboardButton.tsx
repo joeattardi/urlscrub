@@ -1,10 +1,11 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { PiCheck, PiCopy } from 'react-icons/pi';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { useState } from 'react';
+import { PiCopy } from 'react-icons/pi';
 
 type CopyToClipboardButtonProps = {
     url: string;
-}
+};
 
 export default function CopyToClipboardButton({ url }: CopyToClipboardButtonProps) {
     const [showCopied, setShowCopied] = useState(false);
@@ -17,14 +18,19 @@ export default function CopyToClipboardButton({ url }: CopyToClipboardButtonProp
     }
 
     return (
-        <Button
-            variant="outline"
-            className="cursor-pointer"
-            disabled={!url}
-            onClick={onClick}
-        >
-            {showCopied ? <PiCheck /> : <PiCopy />}
-            {showCopied ? 'Copied!' : 'Copy'}
-        </Button>
-    )
+        <Tooltip open={showCopied}>
+            <TooltipTrigger asChild>
+                <Button
+                    variant="outline"
+                    className="cursor-pointer"
+                    disabled={!url}
+                    onClick={onClick}
+                >
+                    <PiCopy />
+                    Copy
+                </Button>
+            </TooltipTrigger>
+            <TooltipContent>Copied!</TooltipContent>
+        </Tooltip>
+    );
 }

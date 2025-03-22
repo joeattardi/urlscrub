@@ -7,6 +7,7 @@ import CopyToClipboardButton from './CopyToClipboardButton';
 import ProtocolSelect from './ProtocolSelect';
 
 export default function URLBuilder() {
+    const [shouldUpdateUrl, setShouldUpdateUrl] = useState(true);
     const [url, setUrl] = useState('');
     const [urlData, setUrlData] = useState({
         protocol: 'https:',
@@ -18,16 +19,19 @@ export default function URLBuilder() {
 
     useEffect(() => {
         try {
-            const newUrl = new URL(`${urlData.protocol}//${urlData.hostname}`);
-            newUrl.pathname = urlData.pathname;
+            if (shouldUpdateUrl) {
+                const newUrl = new URL(`${urlData.protocol}//${urlData.hostname}`);
+                newUrl.pathname = urlData.pathname;
 
-            setUrl(newUrl.href);
+                setUrl(newUrl.href);
+            }
         } catch {
             setUrl('');
         }
-    }, [urlData]);
+    }, [urlData, shouldUpdateUrl]);
 
     function onProtocolChange(protocol: string) {
+        setShouldUpdateUrl(true);
         setUrlData((urlData) => ({
             ...urlData,
             protocol
@@ -35,13 +39,15 @@ export default function URLBuilder() {
     }
 
     function onInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-        setUrlData(urlData => ({
+        setShouldUpdateUrl(true);
+        setUrlData((urlData) => ({
             ...urlData,
             [event.target.name]: event.target.value
         }));
     }
 
     function onUrlChange(event: React.ChangeEvent<HTMLInputElement>) {
+        setShouldUpdateUrl(false);
         setUrl(event.target.value);
 
         try {
