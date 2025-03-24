@@ -9,9 +9,11 @@ export default function App() {
                     <PiLinkSimple className="text-3xl" />
                     URL Scrub
                 </h1>
+                <div className="text-sm">Clean links. No junk.</div>
             </header>
             <main className="p-4 max-w-4xl w-full mx-auto">
                 <URLBuilder />
+                <div className="text-center text-sm m-4">Made with <span className="text-lg">☕️</span> by <a className="text-blue-700" href="https://joeattardi.com">Joe Attardi</a>.</div>
             </main>
         </div>
     );
