@@ -4,12 +4,14 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { trackingParameters as trackingParameterList } from '@/tracking-params';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { PiCaretRight, PiLinkSimple } from 'react-icons/pi';
 import CopyToClipboardButton from './CopyToClipboardButton';
 import ProtocolSelect from './ProtocolSelect';
 import QueryParameters from './QueryParameters';
+import RemoveTrackers from './RemoveTrackers';
 import { QueryParameter } from './types';
 
 export default function URLBuilder() {
@@ -24,6 +26,13 @@ export default function URLBuilder() {
         hash: '',
         port: ''
     });
+
+    function removeTrackingParameters() {
+        setShouldUpdateUrl(true);
+        setQueryParameters((queryParameters) =>
+            queryParameters.filter((parameter) => !trackingParameterList.includes(parameter.name))
+        );
+    }
 
     function deleteParameter(id: string) {
         setShouldUpdateUrl(true);
@@ -126,8 +135,13 @@ export default function URLBuilder() {
                 hash: '',
                 port: ''
             });
+            setQueryParameters([]);
         }
     }
+
+    const trackingParameters = queryParameters.filter((parameter) =>
+        trackingParameterList.includes(parameter.name)
+    );
 
     return (
         <div className="flex flex-col gap-4">
@@ -141,12 +155,18 @@ export default function URLBuilder() {
                         </div>
                     </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex flex-col gap-4">
                     <Input
                         placeholder="Enter or paste a URL..."
                         value={url}
                         onChange={onUrlChange}
                     />
+                    <div className="flex items-center gap-4">
+                        <RemoveTrackers
+                            trackingParameters={trackingParameters}
+                            onRemove={removeTrackingParameters}
+                        />
+                    </div>
                 </CardContent>
             </Card>
 
